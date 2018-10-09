@@ -1,0 +1,6 @@
+[package]
+name = "foe-sumdonation"
+version = "0.1.0"
+authors = ["Jiri Konecny <jkonecny@redhat.com>"]
+
+[dependencies]

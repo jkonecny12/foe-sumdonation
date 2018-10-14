@@ -6,8 +6,8 @@ use db::DBConnector;
 
 
 pub struct SQLiteDB {
-    pub db_path: String,
-    pub connection: Option<Connection>,
+    db_path: String,
+    connection: Option<Connection>,
 }
 
 

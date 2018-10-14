@@ -4,3 +4,4 @@ version = "0.1.0"
 authors = ["Jiri Konecny <jkonecny@redhat.com>"]
 
 [dependencies]
+rusqlite = "0.14.0"

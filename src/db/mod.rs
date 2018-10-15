@@ -5,3 +5,7 @@ pub mod sqlite;
 pub trait DBConnector {
     fn connect(&mut self) -> Result<String, String>;
 }
+
+pub trait DBInitiateTables {
+    fn create_tables(&self) -> bool;
+}

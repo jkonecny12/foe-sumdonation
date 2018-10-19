@@ -2,7 +2,7 @@ extern crate rusqlite;
 
 use self::rusqlite::Connection;
 use std::path::Path;
-use db::{DBConnector,DBInitiateTables};
+use db::{DBConnector,DBTableInitiator};
 
 
 pub struct SQLiteDB {
@@ -26,6 +26,21 @@ impl SQLiteDB {
              panic!("Connection wasn't created yet!");
          }
     }
+
+    fn create_donations_sql(&self) -> bool {
+        let res = self.get_connection().execute(
+                "CREATE TABLE IF NOT EXISTS Donations(
+                    id      INTEGER PRIMARY KEY,
+                    who     INTEGER,
+                    what    INTEGER,
+                    count   INTEGER)", &[]).unwrap();
+
+       if res > 0 {
+           return true
+       } else {
+           return false
+       }
+    }
 }
 
 impl DBConnector for SQLiteDB {
@@ -46,23 +61,9 @@ impl DBConnector for SQLiteDB {
 
 }
 
-
-impl DBInitiateTables for SQLiteDB {
+impl DBTableInitiator for SQLiteDB {
 
     fn create_tables(&self) -> bool {
-        let rows = self.get_connection().execute(
-            "CREATE TABLE IF NOT EXISTS Donations(
-                id      INTEGER PRIMARY KEY,
-                who     INTEGER,
-                what    INTEGER,
-                count   INTEGER)", &[])
-            .unwrap();
-
-        if rows != 0 {
-            return false
-        }
-        else {
-            return true
-        }
+        self.create_donations_sql()
     }
 }

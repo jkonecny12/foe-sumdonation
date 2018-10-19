@@ -6,6 +6,6 @@ pub trait DBConnector {
     fn connect(&mut self) -> Result<String, String>;
 }
 
-pub trait DBInitiateTables {
+pub trait DBTableInitiator {
     fn create_tables(&self) -> bool;
 }

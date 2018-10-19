@@ -27,13 +27,58 @@ impl SQLiteDB {
          }
     }
 
+    fn create_players_sql(&self) -> bool {
+        let res = self.get_connection().execute(
+                "CREATE TABLE IF NOT EXISTS Players(
+                    id      INTEGER PRIMARY KEY,
+                    name    STRING,
+                    age     INTEGER,
+                    FOREIGN KEY(age) REFERENCES Age(id))", &[]).unwrap();
+
+       if res > 0 {
+           return true
+       } else {
+           return false
+       }
+    }
+
+    fn create_age_sql(&self) -> bool {
+        let res = self.get_connection().execute(
+                "CREATE TABLE IF NOT EXISTS Age(
+                    id      INTEGER PRIMARY KEY,
+                    name    STRING)", &[]).unwrap();
+
+       if res > 0 {
+           return true
+       } else {
+           return false
+       }
+    }
+
+    fn create_resources_sql(&self) -> bool {
+        let res = self.get_connection().execute(
+                "CREATE TABLE IF NOT EXISTS Resources(
+                    id      INTEGER PRIMARY KEY,
+                    name    STRING,
+                    age     INTEGER,
+                    FOREIGN KEY(age) REFERENCES Age(id))", &[]).unwrap();
+
+       if res > 0 {
+           return true
+       } else {
+           return false
+       }
+    }
+
     fn create_donations_sql(&self) -> bool {
         let res = self.get_connection().execute(
                 "CREATE TABLE IF NOT EXISTS Donations(
                     id      INTEGER PRIMARY KEY,
                     who     INTEGER,
                     what    INTEGER,
-                    count   INTEGER)", &[]).unwrap();
+                    count   INTEGER,
+                    FOREIGN KEY(who) REFERENCES Players(id),
+                    FOREIGN KEY(what) REFERENCES Resources(id))", &[]).unwrap();
 
        if res > 0 {
            return true
@@ -64,6 +109,26 @@ impl DBConnector for SQLiteDB {
 impl DBTableInitiator for SQLiteDB {
 
     fn create_tables(&self) -> bool {
-        self.create_donations_sql()
+        let res = self.create_age_sql();
+        if ! res {
+            return false
+        }
+
+        let res = self.create_players_sql();
+        if ! res {
+            return false
+        }
+
+        let res = self.create_resources_sql();
+        if ! res {
+            return false
+        }
+
+        let res = self.create_donations_sql();
+        if ! res {
+            return false
+        }
+
+        true
     }
 }

@@ -3,7 +3,7 @@
 pub mod sqlite;
 
 pub trait DBConnector {
-    fn connect(&mut self) -> Result<String, String>;
+    fn connect(&mut self) -> Result<(), String>;
 }
 
 pub trait DBTableInitiator {

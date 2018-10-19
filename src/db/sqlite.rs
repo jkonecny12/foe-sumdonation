@@ -45,14 +45,14 @@ impl SQLiteDB {
 
 impl DBConnector for SQLiteDB {
 
-    fn connect(&mut self) -> Result<String, String> {
+    fn connect(&mut self) -> Result<(), String> {
         let path = Path::new(&self.db_path);
         let con = Connection::open(path);
 
         match con {
             Ok(connection) => {
                 self.connection = Some(connection);
-                return Ok("".to_string())
+                return Ok(())
             },
             Err(err) => Err(err.to_string()),
         }
